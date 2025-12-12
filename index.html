@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de JavaScript</title>
+
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+        rel="stylesheet">
+
+    <style>
+        body {
+            background: #f0f2f5;
+        }
+        .quiz-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .btn-custom {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+    <h2 class="text-center mb-4">Quiz – Conhecimentos Gerais</h2>
+
+    <div id="quiz"></div>
+
+    <button id="btnEnviar" class="btn btn-primary mt-3 btn-custom">Enviar Respostas</button>
+
+    <div id="resultado" class="mt-4 fs-4 text-center fw-bold"></div>
+</div>
+
+<script>
+    const perguntas = [
+        {
+            enunciado: "1. Qual planeta é conhecido como ‘Planeta Vermelho’?",
+            alternativas: ["Júpiter", "Marte", "Vênus", "Saturno"],
+            correta: 1
+        },
+        {
+            enunciado: "2. Quem inventou a lâmpada elétrica?",
+            alternativas: ["Nikola Tesla", "Thomas Edison", "Albert Einstein", "Graham Bell"],
+            correta: 1
+        },
+        {
+            enunciado: "3. Quantos lados tem um hexágono?",
+            alternativas: ["4", "5", "6", "7"],
+            correta: 2
+        },
+        {
+            enunciado: "4. Qual é a capital da França?",
+            alternativas: ["Londres", "Paris", "Berlim", "Madri"],
+            correta: 1
+        },
+        {
+            enunciado: "5. Qual dessas linguagens roda no navegador?",
+            alternativas: ["Java", "Python", "C#", "JavaScript"],
+            correta: 3
+        }
+    ];
+
+    const quizDiv = document.getElementById("quiz");
+
+    perguntas.forEach((p, index) => {
+        const bloco = document.createElement("div");
+        bloco.classList.add("mb-4");
+
+        let alternativasHTML = "";
+        p.alternativas.forEach((alt, i) => {
+            alternativasHTML += `
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q${index}" value="${i}">
+                    <label class="form-check-label">${alt}</label>
+                </div>
+            `;
+        });
+
+        bloco.innerHTML = `
+            <h5>${p.enunciado}</h5>
+            ${alternativasHTML}
+        `;
+        quizDiv.appendChild(bloco);
+    });
+
+    document.getElementById("btnEnviar").addEventListener("click", () => {
+        let pontos = 0;
+
+        perguntas.forEach((p, index) => {
+            const selecionada = document.querySelector(`input[name="q${index}"]:checked`);
+            if (selecionada && Number(selecionada.value) === p.correta) {
+                pontos++;
+            }
+        });
+
+        document.getElementById("resultado").innerHTML =
+            `Você acertou <span class="text-success">${pontos}</span> de ${perguntas.length} perguntas!`;
+    });
+</script>
+
+</body>
+</html>
